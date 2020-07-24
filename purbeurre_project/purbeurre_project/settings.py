@@ -76,6 +76,9 @@ TEMPLATES = [
 
 # PurBeurre
 AUTH_USER_MODEL = 'users.CustomUser'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+SIGNUP_REDIRECT_URL = 'home'
 
 WSGI_APPLICATION = 'purbeurre_project.wsgi.application'
 
