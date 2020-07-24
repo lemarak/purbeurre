@@ -1,21 +1,14 @@
 {% extends 'pages/_base.html' %}
 {% load static %}
 
-{% block title %}Home{% endblock title %}
+{% block title %}Pur Beurre{% endblock title %}
 
 {% block content %}
 
-<h1>Homepage</h1>
+<!-- Masthead-->
+{% include "pages/masthead.html" %}
 
-<img class="cover" src="{% static 'images/fond_2.jpg' %}">
-
-{% if user.is_authenticated %}
-<p>Hi {{ user.username }}!</p>
-<p><a class="btn btn-success" href="{% url 'logout' %}">Log Out</a></p>
-{% else %}
-<p>You are not logged in</p>
-<a class="btn btn-success" href="{% url 'login' %}">Log In</a>
-<a class="btn btn-success" href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+<!-- About-->
+{% include "pages/about.html" %}
 
 {% endblock content %}
