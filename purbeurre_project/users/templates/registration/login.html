@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<section class="page-section bg-primary" id="login">
+<section class="" id="login">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center">
@@ -13,8 +13,8 @@
                 <form method="post">
                     {% csrf_token %}
                     {{ form|crispy }}
-                    <button class="btn btn-success" type="submit">Log In</button>
-                    <a href="{{request.META.HTTP_REFERER}}">Go back</a>
+                    <button class="btn btn-success" type="submit">Connexion</button>
+                    <a class="btn btn-success" href="{{request.META.HTTP_REFERER}}">Retour</a>
                 </form>
             </div>
         </div>
