@@ -1,4 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
+from django.core.management import call_command
 
 import requests
 
@@ -17,13 +18,8 @@ class Command(BaseCommand):
         self.stdout.write(self.style.WARNING(
             'Début de l\'importation API OpenFoodFacts'))
 
-        # Removes records from the category table
-        self.stdout.write('Suppression des données Catégorie')
-        Category.objects.all().delete()
-
-        # Removes records from the product table
-        self.stdout.write('Suppression des données Produit')
-        Product.objects.all().delete()
+        # Remove data products
+        call_command('delete_products')
 
         # request all categories from API
         res = requests.get('https://fr.openfoodfacts.org/categories.json')
@@ -38,3 +34,27 @@ class Command(BaseCommand):
         for category in contents_unique:
             if category['id'] in settings.CATEGORIES_VISIBLE:
                 add_category(category)
+
+                # import products from this category
+                str_requests = "https://fr.openfoodfacts.org/cgi/search.pl? \
+                    action=process& \
+                    tagtype_0=categories& \
+                    tag_contains_0=contains& \
+                    tag_0=%s& \
+                    sort_by=unique_scans_n& \
+                    page_size=20& \
+                    json=1& \
+                    page=1" % (category['id'])
+
+                res = requests.get(str_requests.replace(" ", ""))
+                self.stdout.write("Produits de %s - Status code: %s" % (
+                    category["name"],
+                    res.status_code))
+
+                contents = res.json()
+                # delete duplicates products in one category
+                contents_unique = list(
+                    {v['_id']: v for v in contents['products']}.values())
+
+                for product in contents_unique:
+                    add_product(product, category['id'])
