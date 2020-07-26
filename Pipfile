@@ -12,6 +12,7 @@ python-dotenv = "*"
 django-crispy-forms = "*"
 django-coverage = "*"
 django-coverage-plugin = "*"
+django-autoslug = "*"
 
 [requires]
 python_version = "3.8"
