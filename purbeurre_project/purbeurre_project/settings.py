@@ -43,6 +43,7 @@ INSTALLED_APPS = [
 
     # Third-party
     'crispy_forms',
+    'django_coverage',
 
     # local
     'users.apps.UsersConfig',

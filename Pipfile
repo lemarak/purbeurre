@@ -10,6 +10,8 @@ django = "*"
 psycopg2 = "*"
 python-dotenv = "*"
 django-crispy-forms = "*"
+django-coverage = "*"
+django-coverage-plugin = "*"
 
 [requires]
 python_version = "3.8"
