@@ -84,7 +84,18 @@ AUTH_USER_MODEL = 'users.CustomUser'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
+# Categories that appear in the app
+CATEGORIES_VISIBLE = [
+    "en:salted-spreads",
+    "en:fruit-jams",
+    "en:farming-products",
+    "en:legumes-and-their-products",
+    "en:pastas",
+    "en:fruit-based-beverages",
+    "en:frozen-desserts",
+    "en:pasteurized-cheeses",
+    "en:colas"
+]
 WSGI_APPLICATION = 'purbeurre_project.wsgi.application'
 
 

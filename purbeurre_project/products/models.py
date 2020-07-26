@@ -33,11 +33,11 @@ class Product(models.Model):
     def __str__(self):
         return self.product_name_fr
 
-    # def get_absolute_url(self):
-    #     return reverse(
-    #         'products:detail',
-    #         kwargs={"slug": self.slug}
-    #     )
+    def get_absolute_url(self):
+        return reverse(
+            'products:detail',
+            kwargs={"slug": self.slug}
+        )
 
 
 class Category(models.Model):
@@ -47,9 +47,11 @@ class Category(models.Model):
                          unique=True,
                          always_update=False,
                          populate_from="id_category")
+    name = models.CharField("url catégorie", max_length=255)
     products = models.IntegerField("Nb produits")
     url = models.CharField("url catégorie", max_length=255)
     visible = models.BooleanField("visible")
+    category = models.ManyToManyField(Product, through='CatProd')
 
     def __str__(self):
         return id_category
