@@ -13,6 +13,7 @@ def add_category(category):
 
 
 def add_product(product, id_category):
+    # Mandatory fields in the API
     mandatory_fields = [
         '_id',
         'product_name_fr',
@@ -21,10 +22,12 @@ def add_product(product, id_category):
         'stores',
         'generic_name_fr',
         'brands',
+        'url'
     ]
 
     if check_all_fields_product(product, mandatory_fields):
         new_product = Product.objects.create(
+            # product informations
             id_product=str(product['_id']),
             product_name_fr=product['product_name_fr'],
             nutriscore_score=product['nutriscore_score'],
@@ -32,6 +35,17 @@ def add_product(product, id_category):
             stores=product['stores'],
             generic_name_fr=product['generic_name_fr'],
             brands=product['brands'],
+            url_openfood=product['url'],
+            # images
+            small_image=product.get('image_front_small_url', "#"),
+            display_image=product.get('image_front_url', "#"),
+            # nutriments
+            is_beverage=product.get('is_beverage', False),
+            fat_100g=product['nutriments'].get('fat_100g', -1),
+            satured_fat_100g=product['nutriments'].get(
+                'saturated-fat_100g', -1),
+            sugars_100g=product['nutriments'].get('sugars_100g', -1),
+            salt_100g=product['nutriments'].get('salt_100g', -1)
         )
         category = Category.objects.get(pk=id_category)
         new_product.category.add(category)

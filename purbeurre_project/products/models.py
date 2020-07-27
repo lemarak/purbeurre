@@ -30,13 +30,15 @@ class Product(models.Model):
         ('D', 'Score D'),
         ('E', 'Score E'),
     ]
-
+    # primary key
     id_product = models.CharField(
         "id_product", max_length=15, primary_key=True)
+    # for product link
     slug = AutoSlugField("id Product Address",
                          unique=True,
                          always_update=False,
                          populate_from="id_product")
+    # product informations
     product_name_fr = models.CharField("nom produit", max_length=150)
     nutriscore_score = models.IntegerField("score produit")
     nutriscore_grade = models.CharField("grade produit",
@@ -45,6 +47,17 @@ class Product(models.Model):
     stores = models.CharField("magasins", max_length=255)
     generic_name_fr = models.TextField("description", blank=True)
     brands = models.CharField("marque", max_length=100)
+    url_openfood = models.URLField("url product", default="#")
+    # images
+    small_image = models.URLField("small image", default="#")
+    display_image = models.URLField("display image", default="#")
+    # nutriments
+    is_beverage = models.BooleanField("Boisson", default=False)
+    fat_100g = models.FloatField("Lipides", default=-1)
+    satured_fat_100g = models.FloatField("Acides gras", default=-1)
+    sugars_100g = models.FloatField("Sucres", default=-1)
+    salt_100g = models.FloatField("Sel", default=-1)
+    # category (relation many to many through CatProd)
     category = models.ManyToManyField(Category, through='CatProd')
 
     def __str__(self):
