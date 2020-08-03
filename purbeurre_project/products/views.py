@@ -13,18 +13,27 @@ class ProductDetailView(DetailView):
 
 class SubstitutesListView(ListView):
     model = Product
-    context_object_name = 'substitutes'
+    # context_object_name = 'substitutes'
     template_name = 'products/substitutes.html'
 
-    def get_queryset(self):
+    # def get_queryset(self):
+    #     query = self.request.GET.get('search')
+    #     product = Product.objects.find(query)
+    #     context['product'] = product
+    #     if product:
+    #         substitutes = Product.objects.get_substitutes(product[0])
+    #         context['substitutes'] = substitutes
+    #         return substitutes
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
         query = self.request.GET.get('search')
         product = Product.objects.find(query)
-        print("Product:", product)
+        context['product_select'] = product[0]
         if product:
             substitutes = Product.objects.get_substitutes(product[0])
-            print("substitutes:", substitutes)
-            return substitutes
+            context['substitutes'] = substitutes
+            print("context:", context)
+        return context
 
-        # return product, Product.objects.filter(
-        #     Q(nutriscore_score__lte=product.nutriscore_score)
-        # )

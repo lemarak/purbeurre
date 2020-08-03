@@ -30,6 +30,7 @@ class ProductManager(models.Manager):
         try:
             products = queryset.filter(
                 Q(product_name_fr__icontains=name)
+                | Q(generic_name_fr__icontains=name)
                 | Q(categories__name__icontains=name)
             )
         except ObjectDoesNotExist:
@@ -39,11 +40,20 @@ class ProductManager(models.Manager):
 
     def get_substitutes(self, product):
         queryset = self.get_queryset()
-        print("catégorie:", product.categories)
-        return queryset.filter(
-            nutriscore_score__gte=product.nutriscore_score
-        ).exclude(pk=product.id_product
-                  ).filter(categories__in=product.categories.all())
+        try:
+            substitutes = queryset.filter(
+                nutriscore_score__lte=product.nutriscore_score
+            ).filter(
+                categories__in=product.categories.all()
+            ).exclude(
+                pk=product.id_product
+            ).order_by(
+                'nutriscore_score'
+            )
+        except ObjectDoesNotExist:
+            substitutes = None
+        finally:
+            return substitutes
 
 
 class Product(models.Model):

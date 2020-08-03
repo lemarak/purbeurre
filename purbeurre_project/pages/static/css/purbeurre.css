@@ -1,4 +1,9 @@
+.img-product {
+    max-height: 250px;
+}
 
-product-img {
-    opacity: 0.5;
+.img-substitute {
+    max-height: 200px;
+    height: auto;
+    width: auto;
 }

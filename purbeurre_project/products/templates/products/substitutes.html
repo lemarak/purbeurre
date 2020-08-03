@@ -1,22 +1,23 @@
 {% extends 'pages/_base.html' %}
 {% load static %}
 
-{% block title %}Pur Beurre - {{ product.product_name_fr }} {% endblock title %}
+{% block title %}Pur Beurre - {{ product_select }} {% endblock title %}
 
 {% block content %}
 
 <header class="masthead product-detail">
     <div class="container h-80">
-        <div class="row h-80">
-
-            <img class="img-fluid rounded mx-auto d-block product-img" src="{{ product.display_image }}"
-                alt="{{ product.product_name_fr }}">
+        <div class="row h-80 justify-content-center">
+            <a href="{% url 'book_detail' product_select.slug %}">
+            <img class="img-fluid rounded mx-auto d-block img-product" src="{{ product_select.display_image }}"
+                alt="{{ product_select.product_name_fr }}">
+            </a>
         </div>
         <div class="row h-80 align-items-center justify-content-center text-center">
-            <h3 class="text-white">{{ product.product_name_fr }}</h3>
+            <h3 class="text-white">{{ product_select }}</h3>
         </div>
         <div class="row h-80 align-items-center justify-content-center text-center">
-            <p class="text-white">{{ product.generic_name_fr }}</p>
+            <p class="text-white">{{ product_select.generic_name_fr }}</p>
         </div>
 
     </div>
@@ -25,11 +26,36 @@
 
 <section class="page-section bg-primary" id="about">
     <div class="container">
-        <ul>
+        <div class="row">
+            <h4>Vous pouvez remplacer cet aliment par...</h4>
+        </div>
+        <div class="row">
             {% for substitute in substitutes %}
-            <li>{{substitute}} - {{substitute.category}}</li>
+
+            <div class="col-md-4 mx-auto">
+                <div class="card mb-4 box-shadow">
+                    <a href="{% url 'book_detail' substitute.slug %}">
+                        <img class="card-img-top img-thumbnail img-substitute" alt="{{ substitute }}"
+                            src="{{ substitute.display_image }}" data-holder-rendered="true">
+                    </a>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ substitute }}</h5>
+                        <p class="card-text">{{ substitute.generic_name_fr }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            {% if user.is_authenticated %}
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">Sauvegarder</button>
+                            </div>
+                            {% endif %}
+                            <small class="text-muted">{{ substitute.categories.first }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             {% endfor %}
-        </ul>
+        </div>
+
     </div>
 </section>
 
