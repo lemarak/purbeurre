@@ -16,15 +16,6 @@ class SubstitutesListView(ListView):
     # context_object_name = 'substitutes'
     template_name = 'products/substitutes.html'
 
-    # def get_queryset(self):
-    #     query = self.request.GET.get('search')
-    #     product = Product.objects.find(query)
-    #     context['product'] = product
-    #     if product:
-    #         substitutes = Product.objects.get_substitutes(product[0])
-    #         context['substitutes'] = substitutes
-    #         return substitutes
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -34,6 +25,4 @@ class SubstitutesListView(ListView):
         if product:
             substitutes = Product.objects.get_substitutes(product[0])
             context['substitutes'] = substitutes
-            print("context:", context)
         return context
-

@@ -31,6 +31,7 @@ class ProductManager(models.Manager):
             products = queryset.filter(
                 Q(product_name_fr__icontains=name)
                 | Q(generic_name_fr__icontains=name)
+                | Q(brands__icontains=name)
                 | Q(categories__name__icontains=name)
             )
         except ObjectDoesNotExist:
