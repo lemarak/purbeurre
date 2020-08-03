@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 from autoslug import AutoSlugField
 
@@ -18,7 +20,30 @@ class Category(models.Model):
     visible = models.BooleanField("visible")
 
     def __str__(self):
-        return id_category
+        return self.name
+
+
+class ProductManager(models.Manager):
+
+    def find(self, name):
+        queryset = self.get_queryset()
+        try:
+            products = queryset.filter(
+                Q(product_name_fr__icontains=name)
+                | Q(categories__name__icontains=name)
+            )
+        except ObjectDoesNotExist:
+            products = None
+        finally:
+            return products
+
+    def get_substitutes(self, product):
+        queryset = self.get_queryset()
+        print("catégorie:", product.categories)
+        return queryset.filter(
+            nutriscore_score__gte=product.nutriscore_score
+        ).exclude(pk=product.id_product
+                  ).filter(categories__in=product.categories.all())
 
 
 class Product(models.Model):
@@ -58,7 +83,10 @@ class Product(models.Model):
     sugars_100g = models.FloatField("Sucres", default=-1)
     salt_100g = models.FloatField("Sel", default=-1)
     # category (relation many to many through CatProd)
-    category = models.ManyToManyField(Category, through='CatProd')
+    categories = models.ManyToManyField(Category, through='CatProd')
+
+    # Manager
+    objects = ProductManager()
 
     def __str__(self):
         return self.product_name_fr

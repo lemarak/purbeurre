@@ -22,11 +22,12 @@ def add_product(product, id_category):
         'stores',
         'generic_name_fr',
         'brands',
-        'url'
+        'url',
+        'nutriments',
     ]
 
     if check_all_fields_product(product, mandatory_fields):
-        new_product = Product.objects.create(
+        new_product, created = Product.objects.get_or_create(
             # product informations
             id_product=str(product['_id']),
             product_name_fr=product['product_name_fr'],
@@ -47,14 +48,14 @@ def add_product(product, id_category):
             sugars_100g=product['nutriments'].get('sugars_100g', -1),
             salt_100g=product['nutriments'].get('salt_100g', -1)
         )
-        category = Category.objects.get(pk=id_category)
-        new_product.category.add(category)
-        new_product.save()
+        if created:
+            category = Category.objects.get(pk=id_category)
+            new_product.categories.add(category)
+            new_product.save()
 
 
 def check_all_fields_product(product, mandatory_fields):
     for field in mandatory_fields:
         if field not in product:
             return False
-            print(field)
     return True
