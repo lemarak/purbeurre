@@ -1,5 +1,5 @@
 .img-product {
-    max-height: 250px;
+    max-height: 300px;
 }
 
 .img-substitute {
@@ -7,4 +7,35 @@
     height: auto;
     width: auto;
     display: block;
+}
+
+.small-image {
+    max-height: 70px;
+    width: auto;
+    max-width: 100px;
+}
+
+.item {
+    position: relative;
+    padding-top: 20px;
+    display: inline-block;
+}
+
+.notify-badge {
+    position: absolute;
+    right: -20px;
+    top: 10px;
+    background: linear-gradient(60deg, green, rgb(255, 136, 0));
+    text-align: center;
+    border-radius: 30px 30px 30px 30px;
+    color: white;
+    padding: 5px 10px;
+    font-size: 30px;
+}
+
+.centered-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

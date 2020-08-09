@@ -37,6 +37,7 @@ def add_product(product, id_category):
             generic_name_fr=product['generic_name_fr'],
             brands=product['brands'],
             url_openfood=product['url'],
+            popular=product['unique_scans_n'],
             # images
             small_image=product.get('image_front_small_url', "#"),
             display_image=product.get('image_front_url', "#"),

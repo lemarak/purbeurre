@@ -19,17 +19,21 @@
             <p class="text-white">{{ product.generic_name_fr }}</p>
         </div>
 
-        <div class="row h-80 align-items-center justify-content-center text-center">
-            <p class="text-white">{{ product.nutriscore_grade }}</p>
-            <img class="img-fluid rounded mx-auto d-block product-img" src="{% static 'images/nutriscore-a.svg' %}"
-                alt="{{ product.nutriscore_grade }}">
-        </div>
-
-        <div class="row h-80 justify-content-center text-center">
-            <p class="text-white">{{ product.fat_100g }}g Matières grasses / Lipides </p><br>
-            <p class="text-white">{{ product.satured_fat_100g }}g Acides gras saturés</p>
-            <p class="text-white">{{ product.sugars_100g }}g Sucres</p>
-            <p class="text-white">{{ product.salt_100g }}g Sel </p>
+        <div class="row">
+            <div class="col-6">
+                {% with "images/nutriscore-"|add:product.nutriscore_grade|add:".svg" as url_score %}
+                <a href="https://fr.openfoodfacts.org/nutriscore" target="_blank">
+                    <img class="img-fluid rounded mx-auto d-block product-img" src="{% static url_score %}"
+                        alt="{{ product.nutriscore_grade }}">
+                </a>
+                {% endwith %}
+            </div>
+            <div class="col-6">
+                <p class="text-white font-weight-bold">{{ product.fat_100g }}g Matières grasses / Lipides </p>
+                <p class="text-white font-weight-bold">{{ product.satured_fat_100g }}g Acides gras saturés</p>
+                <p class="text-white font-weight-bold">{{ product.sugars_100g }}g Sucres</p>
+                <p class="text-white font-weight-bold">{{ product.salt_100g }}g Sel </p>
+            </div>
         </div>
         <div class="row h-80 align-items-center justify-content-center text-center">
             <a href="{{ product.url_openfood }}" class="btn btn-primary" target='_blank'>Openfoodfacts</a>

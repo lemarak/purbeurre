@@ -42,7 +42,7 @@ class Command(BaseCommand):
                     tag_contains_0=contains& \
                     tag_0=%s& \
                     sort_by=unique_scans_n& \
-                    page_size=20& \
+                    page_size=40& \
                     json=1& \
                     page=1" % (category['id'])
 

@@ -6,6 +6,7 @@ from django.db.models import Q
 
 from autoslug import AutoSlugField
 
+from users.models import CustomUser
 
 class Category(models.Model):
     id_category = models.CharField(
@@ -25,14 +26,17 @@ class Category(models.Model):
 
 class ProductManager(models.Manager):
 
-    def find(self, name):
+    def search(self, name):
         queryset = self.get_queryset()
         try:
             products = queryset.filter(
                 Q(product_name_fr__icontains=name)
+                | Q(pk=name)
                 | Q(generic_name_fr__icontains=name)
                 | Q(brands__icontains=name)
                 | Q(categories__name__icontains=name)
+            ).order_by(
+                '-popular'
             )
         except ObjectDoesNotExist:
             products = None
@@ -49,12 +53,24 @@ class ProductManager(models.Manager):
             ).exclude(
                 pk=product.id_product
             ).order_by(
-                'nutriscore_score'
+                'nutriscore_grade'
             )
         except ObjectDoesNotExist:
             substitutes = None
         finally:
             return substitutes
+
+    def get_favorites(self, user):
+        queryset = self.get_queryset()
+        try:
+            # favorites = queryset
+            favorites = queryset.filter(
+               id_user=user.id
+            )
+        except ObjectDoesNotExist:
+            favorites = None
+        finally:
+            return favorites
 
 
 class Product(models.Model):
@@ -84,6 +100,7 @@ class Product(models.Model):
     generic_name_fr = models.TextField("description", blank=True)
     brands = models.CharField("marque", max_length=100)
     url_openfood = models.URLField("url product", default="#")
+    popular = models.IntegerField("popularite", default=0)
     # images
     small_image = models.URLField("small image", default="#")
     display_image = models.URLField("display image", default="#")
@@ -95,6 +112,7 @@ class Product(models.Model):
     salt_100g = models.FloatField("Sel", default=-1)
     # category (relation many to many through CatProd)
     categories = models.ManyToManyField(Category, through='CatProd')
+    favorites = models.ManyToManyField(CustomUser, through='Favorite')
 
     # Manager
     objects = ProductManager()

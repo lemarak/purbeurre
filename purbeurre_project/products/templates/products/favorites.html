@@ -1,0 +1,74 @@
+{% extends 'pages/_base.html' %}
+{% load static %}
+
+{% block title %}Pur Beurre - Favoris {% endblock title %}
+
+{% block content %}
+
+<section class="page-section bg-primary">
+    <div class="container">
+        {% if not favorites %}
+
+        <div class="alert alert-danger" role="alert">
+            <h3 class="alert-heading">Aucun favori !!!</h3>
+            <p>Vous n'avez enregistré aucun favori pour le moment.</p>
+            <hr>
+            <p class="mb-0">Consultez les produits et sauvegardez ceux qui vous intéressent</p>
+        </div>
+
+        {% else %}
+
+        <div class="row pb-2">
+            <h4 class="text-white">{{ user.username }}, voici vos produits favoris</h4>
+        </div>
+
+        <div class="row">
+            {% for favorite in favorites %}
+
+            <div class="col-md-4">
+                <div class="card mb-4 box-shadow">
+                    <div class="item">
+                        <a href="{% url 'product_detail' favorite.slug %}">
+
+                            <img class="card-img-top rounded img-substitute mx-auto" alt="{{ substitute }}"
+                                src="{{ favorite.display_image }}" data-holder-rendered="true">
+                            <div class="badge badge-pill notify-badge">{{ favorite.nutriscore_grade }}</div>
+                        </a>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{ favorite }}</h5>
+                        <p class="card-text">{{ favorite.generic_name_fr }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                             <small class="text-muted">{{ favorite.categories.first }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+
+        </div>
+        {% if is_paginated %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                <a  class="text-white" href="?page=1">&laquo; première</a>
+                <a class="text-white" href="?page={{ page_obj.previous_page_number }}">précédent</a>
+                {% endif %}
+
+                <span class="current text-white">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                <a class="text-white" href="?page={{ page_obj.next_page_number }}">suivant</a>
+                <a class="text-white" href="?page={{ page_obj.paginator.num_pages }}">dernière &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}

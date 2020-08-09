@@ -5,47 +5,69 @@
 
 {% block content %}
 
-<header class="masthead product-detail">
-    <div class="container h-80">
-        <div class="row h-80 justify-content-center">
-            <a href="{% url 'book_detail' product_select.slug %}">
-            <img class="img-fluid rounded mx-auto d-block img-product" src="{{ product_select.display_image }}"
-                alt="{{ product_select.product_name_fr }}">
-            </a>
-        </div>
-        <div class="row h-80 align-items-center justify-content-center text-center">
-            <h3 class="text-white">{{ product_select }}</h3>
-        </div>
-        <div class="row h-80 align-items-center justify-content-center text-center">
-            <p class="text-white">{{ product_select.generic_name_fr }}</p>
-        </div>
-
-    </div>
-</header>
-
-
-<section class="page-section bg-primary" id="about">
+<section class="page-section bg-primary">
     <div class="container">
-        <div class="row">
-            <h4>Vous pouvez remplacer cet aliment par...</h4>
+        {% if not substitutes %}
+
+        <div class="alert alert-danger" role="alert">
+            <h3 class="alert-heading">Aucun produit !!!</h3>
+            <p>Aucun produit n'a été trouvé.</p>
+            <p>Relancez la recherche.</p>
+            <hr>
+            <p class="mb-0">Vous pouvez faire la recherche par nom de produit, catégorie ou marque.</p>
+        </div>
+
+        {% else %}
+
+        <div class="row pb-2">
+            <h4 class="text-white">Vous pouvez remplacer <strong>{{ selected_product }}
+                    ({{ selected_product.brands }})</strong></h4>
+        </div>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="item">
+                    <a href="{% url 'product_detail' selected_product.slug %}">
+                        <img class="img-fluid rounded mx-auto d-block img-product"
+                            src="{{ selected_product.display_image }}" alt="{{ selected_product.product_name_fr }}">
+                        <div class="badge badge-pill notify-badge">{{ selected_product.nutriscore_grade }}</div>
+                    </a>
+                </div>
+            </div>
+            <!-- <div class="row align-items-center justify-content-center text-center">
+                <h4 class="text-white">{{ product_select }} ({{ product_select.brands }})</h4>
+            </div> -->
+            <div class="row align-items-center justify-content-center text-center">
+                <h4 class="text-white">{{ selected_product.generic_name_fr }}</h4>
+            </div>
+            <!-- other products -->
+
+            <!-- product select -->
+        </div>
+        <div class="row pb-2">
+            <h4 class="text-white">par...</h4>
         </div>
         <div class="row">
             {% for substitute in substitutes %}
 
-            <div class="col-md-4 mx-auto">
+            <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
-                    <a href="{% url 'book_detail' substitute.slug %}">
-                        <img class="card-img-top img-thumbnail img-substitute mx-auto" alt="{{ substitute }}"
-                            src="{{ substitute.display_image }}" data-holder-rendered="true">
-                    </a>
+                    <div class="item">
+                        <a href="{% url 'product_detail' substitute.slug %}">
+
+                            <img class="card-img-top rounded img-substitute mx-auto" alt="{{ substitute }}"
+                                src="{{ substitute.display_image }}" data-holder-rendered="true">
+                            <div class="badge badge-pill notify-badge">{{ substitute.nutriscore_grade }}</div>
+                        </a>
+                    </div>
                     <div class="card-body">
                         <h5 class="card-title">{{ substitute }}</h5>
                         <p class="card-text">{{ substitute.generic_name_fr }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             {% if user.is_authenticated %}
-                            <div class="btn-group">
+                            <!-- <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-outline-secondary">Sauvegarder</button>
-                            </div>
+                            </div> -->
+                            <a href="{% url 'add_favorite' substitute.id_product %}" class="btn btn-sm btn-outline-secondary">Sauvegarder</a>
                             {% endif %}
                             <small class="text-muted">{{ substitute.categories.first }}</small>
                         </div>
@@ -54,10 +76,29 @@
             </div>
 
             {% endfor %}
-        </div>
 
+        </div>
+        {% if is_paginated %}
+        <div class="pagination">
+            <span class="step-links">
+                {% if page_obj.has_previous %}
+                <a  class="text-white" href="?page=1">&laquo; première</a>
+                <a class="text-white" href="?page={{ page_obj.previous_page_number }}">précédent</a>
+                {% endif %}
+
+                <span class="current text-white">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+
+                {% if page_obj.has_next %}
+                <a class="text-white" href="?page={{ page_obj.next_page_number }}">suivant</a>
+                <a class="text-white" href="?page={{ page_obj.paginator.num_pages }}">dernière &raquo;</a>
+                {% endif %}
+            </span>
+        </div>
+        {% endif %}
+        {% endif %}
     </div>
 </section>
-
 
 {% endblock %}
