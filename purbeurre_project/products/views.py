@@ -18,12 +18,17 @@ class SubstitutesListView(ListView):
     # context_object_name = 'substitutes
     template_name = 'products/substitutes.html'
     context_object_name = 'substitutes'
-    paginate_by = 6
 
     def get_queryset(self):
         product = Product.objects.get(pk=self.kwargs['pk'])
         substitutes = Product.objects.get_substitutes(product)
+        # TODO: add is_favorite = True or False
+        # user_favorite_tips = request.user.favoritedtip_set.values_list('pk', flat=True)
+        # tips = [{'tip': tip, 
+        #  'is_favorite': tip.pk in user_favorite_tips and True or False}
+        #  for tip in tips]
         if substitutes:
+            self.paginate_by = 6
             return substitutes
         else:
             return None
@@ -38,12 +43,12 @@ class SubstitutesListView(ListView):
 class SearchListView(ListView):
     template_name = 'products/search.html'
     context_object_name = 'products'
-    paginate_by = 6
 
     def get_queryset(self):
         query = self.request.GET['search']
         products = Product.objects.search(query)
         if products:
+            self.paginate_by = 6
             return products
         else:
             return None
@@ -65,11 +70,10 @@ class FavoritesListView(ListView):
             id=self.request.user.id
         )
         favorites = Product.objects.filter(favorites=user)
-        # favorites = Product.objects.get_favorites(user)
         return favorites
 
 
-def add_favorite(request, pk):
+def admin_favorite(request, pk, action='add'):
     """Save substitute in favorites."""
     if request.user.is_authenticated:
 
@@ -83,9 +87,10 @@ def add_favorite(request, pk):
             pk=pk
         )
 
-        Favorite.objects.update_or_create(
-            id_user=user,
-            id_product=substitute)
+        if action == 'add':
+            substitute.favorites.add(user)
+        elif action == 'del':
+            substitute.favorites.remove(user)
 
         return redirect(request.META.get('HTTP_REFERER'))
     else:

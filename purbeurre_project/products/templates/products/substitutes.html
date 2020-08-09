@@ -64,10 +64,7 @@
                         <p class="card-text">{{ substitute.generic_name_fr }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             {% if user.is_authenticated %}
-                            <!-- <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Sauvegarder</button>
-                            </div> -->
-                            <a href="{% url 'add_favorite' substitute.id_product %}" class="btn btn-sm btn-outline-secondary">Sauvegarder</a>
+                            <a href="{% url 'admin_favorite' substitute.id_product 'add' %}" class="btn btn-sm btn-outline-secondary">Sauvegarder</a>
                             {% endif %}
                             <small class="text-muted">{{ substitute.categories.first }}</small>
                         </div>

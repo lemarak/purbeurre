@@ -8,6 +8,7 @@ from autoslug import AutoSlugField
 
 from users.models import CustomUser
 
+
 class Category(models.Model):
     id_category = models.CharField(
         "id_category", max_length=150, primary_key=True)
@@ -59,18 +60,6 @@ class ProductManager(models.Manager):
             substitutes = None
         finally:
             return substitutes
-
-    def get_favorites(self, user):
-        queryset = self.get_queryset()
-        try:
-            # favorites = queryset
-            favorites = queryset.filter(
-               id_user=user.id
-            )
-        except ObjectDoesNotExist:
-            favorites = None
-        finally:
-            return favorites
 
 
 class Product(models.Model):

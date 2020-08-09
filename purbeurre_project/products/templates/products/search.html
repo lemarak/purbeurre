@@ -6,9 +6,10 @@
 {% block content %}
 
 
-{% if products %}
 <section class="page-section bg-primary">
     <div class="container">
+        {% if products %}
+
 
         <div class="row pb-2">
             <h4 class="text-white">Voici les résultats pour <strong>{{ search }} </strong></h4>
@@ -30,11 +31,6 @@
                         <h5 class="card-title">{{ product }}</h5>
                         <p class="card-text">{{ product.generic_name_fr }}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            {% if user.is_authenticated %}
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-secondary">Sauvegarder</button>
-                            </div>
-                            {% endif %}
                             <small class="text-muted">{{ product.categories.first }}</small>
                         </div>
                     </div>
@@ -46,14 +42,14 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if page_obj.has_previous %}
-                    <a  class="text-white" href="?page=1">&laquo; première</a>
+                    <a class="text-white" href="?page=1">&laquo; première</a>
                     <a class="text-white" href="?page={{ page_obj.previous_page_number }}">précédent</a>
                     {% endif %}
-    
+
                     <span class="current text-white">
                         Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
                     </span>
-    
+
                     {% if page_obj.has_next %}
                     <a class="text-white" href="?page={{ page_obj.next_page_number }}">suivant</a>
                     <a class="text-white" href="?page={{ page_obj.paginator.num_pages }}">dernière &raquo;</a>
@@ -64,19 +60,20 @@
         </div>
 
 
+
+
+        {% else %}
+
+        <div class="alert alert-danger" role="alert">
+            <h3 class="alert-heading">Aucun produit !!!</h3>
+            <p>Aucun produit n'a été trouvé.</p>
+            <p>Relancez la recherche.</p>
+            <hr>
+            <p class="mb-0">Vous pouvez faire la recherche par nom de produit, catégorie ou marque.</p>
+        </div>
+
+        {% endif %}
     </div>
 </section>
-
-{% else %}
-
-<div class="alert alert-danger" role="alert">
-    <h3 class="alert-heading">Aucun produit !!!</h3>
-    <p>Aucun produit n'a été trouvé.</p>
-    <p>Relancez la recherche.</p>
-    <hr>
-    <p class="mb-0">Vous pouvez faire la recherche par nom de produit, catégorie ou marque.</p>
-</div>
-
-{% endif %}
 
 {% endblock %}
