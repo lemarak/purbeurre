@@ -6,4 +6,7 @@ python:
 install:
   - pipenv install
 
-script: python manage.py test
+script: tests
+
+env:
+  - DJANGO_VERSION=3.1
