@@ -42,8 +42,8 @@
             <div class="pagination">
                 <span class="step-links">
                     {% if page_obj.has_previous %}
-                    <a class="text-white" href="?page=1">&laquo; première</a>
-                    <a class="text-white" href="?page={{ page_obj.previous_page_number }}">précédent</a>
+                    <a class="text-white" href="?search={{search}}&page=1">&laquo; première</a>
+                    <a class="text-white" href="?search={{search}}&page={{ page_obj.previous_page_number }}">précédent</a>
                     {% endif %}
 
                     <span class="current text-white">
@@ -51,8 +51,8 @@
                     </span>
 
                     {% if page_obj.has_next %}
-                    <a class="text-white" href="?page={{ page_obj.next_page_number }}">suivant</a>
-                    <a class="text-white" href="?page={{ page_obj.paginator.num_pages }}">dernière &raquo;</a>
+                    <a class="text-white" href="?search={{search}}&page={{ page_obj.next_page_number }}">suivant</a>
+                    <a class="text-white" href="?search={{search}}&page={{ page_obj.paginator.num_pages }}">dernière &raquo;</a>
                     {% endif %}
                 </span>
             </div>

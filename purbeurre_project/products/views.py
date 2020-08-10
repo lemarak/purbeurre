@@ -56,6 +56,7 @@ class SearchListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['search'] = self.request.GET['search']
+        
         return context
 
 
@@ -77,20 +78,15 @@ def admin_favorite(request, pk, action='add'):
     """Save substitute in favorites."""
     if request.user.is_authenticated:
 
-        user = get_object_or_404(
-            CustomUser,
-            id=request.user.id
-        )
-
         substitute = get_object_or_404(
             Product,
             pk=pk
         )
 
         if action == 'add':
-            substitute.favorites.add(user)
+            substitute.favorites.add(request.user)
         elif action == 'del':
-            substitute.favorites.remove(user)
+            substitute.favorites.remove(request.user)
 
         return redirect(request.META.get('HTTP_REFERER'))
     else:
