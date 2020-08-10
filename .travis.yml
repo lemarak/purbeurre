@@ -11,3 +11,4 @@ script:
 
 env:
   - DJANGO_VERSION=3.1
+  - SECRET_KEY = '8$ccp4u6y$s8w)ne2t5e@!+5o&nsi(lhelo=0470k9+whz+2_7'
