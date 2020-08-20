@@ -40,8 +40,9 @@ class ProductManager(models.Manager):
                 '-popular'
             )
         except ObjectDoesNotExist:
-            products = None
+            products = queryset.none()
         finally:
+            print("products:", products)
             return products
 
     def get_substitutes(self, product):
@@ -57,7 +58,7 @@ class ProductManager(models.Manager):
                 'nutriscore_grade'
             )
         except ObjectDoesNotExist:
-            substitutes = None
+            substitutes = queryset.none()
         finally:
             return substitutes
 

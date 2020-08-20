@@ -29,10 +29,10 @@
                 {% endwith %}
             </div>
             <div class="col-6">
-                <p class="text-white font-weight-bold">{{ product.fat_100g }}g Matières grasses / Lipides </p>
-                <p class="text-white font-weight-bold">{{ product.satured_fat_100g }}g Acides gras saturés</p>
-                <p class="text-white font-weight-bold">{{ product.sugars_100g }}g Sucres</p>
-                <p class="text-white font-weight-bold">{{ product.salt_100g }}g Sel </p>
+                <p class="text-white font-weight-bold">{{ product.fat_100g|floatformat:2 }}g Matières grasses / Lipides </p>
+                <p class="text-white font-weight-bold">{{ product.satured_fat_100g|floatformat:2 }}g Acides gras saturés</p>
+                <p class="text-white font-weight-bold">{{ product.sugars_100g|floatformat:2 }}g Sucres</p>
+                <p class="text-white font-weight-bold">{{ product.salt_100g|floatformat:2 }}g Sel </p>
             </div>
         </div>
         <div class="row h-80 align-items-center justify-content-center text-center">

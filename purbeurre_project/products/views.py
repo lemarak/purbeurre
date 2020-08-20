@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import DetailView, ListView
 from django.views import View
 from django.core.paginator import Paginator
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
 
 from .models import Product, Favorite
-from users.models import CustomUser
+# from users.models import CustomUser
 
 
 class ProductDetailView(DetailView):
@@ -22,41 +22,35 @@ class SubstitutesListView(ListView):
     def get_queryset(self):
         product = Product.objects.get(pk=self.kwargs['pk'])
         substitutes = Product.objects.get_substitutes(product)
-        # TODO: add is_favorite = True or False
-        # user_favorite_tips = request.user.favoritedtip_set.values_list('pk', flat=True)
-        # tips = [{'tip': tip, 
-        #  'is_favorite': tip.pk in user_favorite_tips and True or False}
-        #  for tip in tips]
-        if substitutes:
-            self.paginate_by = 6
-            return substitutes
-        else:
-            return None
+        self.paginate_by = 6
+
+        return substitutes
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         product = Product.objects.get(pk=self.kwargs['pk'])
         context['selected_product'] = product
+        user_favorite = Product.objects.filter(favorites=self.request.user)
+        context['favorites'] = user_favorite
+
         return context
 
 
 class SearchListView(ListView):
     template_name = 'products/search.html'
     context_object_name = 'products'
+    paginate_by = 6
 
     def get_queryset(self):
         query = self.request.GET['search']
         products = Product.objects.search(query)
-        if products:
-            self.paginate_by = 6
-            return products
-        else:
-            return None
+
+        return products
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['search'] = self.request.GET['search']
-        
+
         return context
 
 
@@ -66,11 +60,7 @@ class FavoritesListView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        user = get_object_or_404(
-            CustomUser,
-            id=self.request.user.id
-        )
-        favorites = Product.objects.filter(favorites=user)
+        favorites = Product.objects.filter(favorites=self.request.user)
         return favorites
 
 

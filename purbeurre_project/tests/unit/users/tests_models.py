@@ -1,8 +1,5 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
-from django.urls import reverse, resolve
-
-from .views import SignupPageView, UpdateUserPageView
 
 
 class CustomUserTests(TestCase):
@@ -54,23 +51,3 @@ class CustomUserTests(TestCase):
     #             password='123test',
     #         )
     #     self.assertEqual("???", str(foo.exception), "???")
-
-
-class SignupPageTests(TestCase):
-
-    def setUp(self):
-        url = reverse('signup')
-        self.response = self.client.get(url)
-
-    def test_signup_page(self):
-        """ test the signup page """
-        self.assertContains(self.response, 'Inscription')
-        self.assertEqual(self.response.status_code, 200)
-
-    def test_signup_view(self):
-        """ test route """
-        view = resolve('/accounts/signup/')
-        self.assertEqual(
-            view.func.__name__,
-            SignupPageView.as_view().__name__
-        )

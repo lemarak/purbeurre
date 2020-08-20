@@ -5,6 +5,7 @@ python:
 
 install:
   - pipenv install
+  - pip install
 
 script:
   - python purbeurre_project/manage.py test
