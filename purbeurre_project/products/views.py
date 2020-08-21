@@ -30,8 +30,6 @@ class SubstitutesListView(ListView):
         context = super().get_context_data(**kwargs)
         product = Product.objects.get(pk=self.kwargs['pk'])
         context['selected_product'] = product
-        user_favorite = Product.objects.filter(favorites=self.request.user)
-        context['favorites'] = user_favorite
 
         return context
 
@@ -61,6 +59,7 @@ class FavoritesListView(ListView):
 
     def get_queryset(self):
         favorites = Product.objects.filter(favorites=self.request.user)
+        # favorites = favorites.order_by('-favorites.date_favorite')
         return favorites
 
 

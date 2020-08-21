@@ -1,8 +1,8 @@
-from django.test import TestCase
+from django.test import SimpleTestCase
 from django.urls import reverse
 
 
-class UsersUrlTests(TestCase):
+class UsersUrlTests(SimpleTestCase):
 
     def test_signup_url(self):
         """ test the signup url """

@@ -1,8 +1,8 @@
-from django.test import TestCase
+from django.test import SimpleTestCase
 from django.urls import reverse
 
 
-class ProductsUrlTests(TestCase):
+class ProductsUrlTests(SimpleTestCase):
 
     def test_detail_url(self):
         """ test the detail product url """

@@ -42,7 +42,6 @@ class ProductManager(models.Manager):
         except ObjectDoesNotExist:
             products = queryset.none()
         finally:
-            print("products:", products)
             return products
 
     def get_substitutes(self, product):
@@ -81,7 +80,7 @@ class Product(models.Model):
                          always_update=False,
                          populate_from="id_product")
     # product informations
-    product_name_fr = models.CharField("nom produit", max_length=150)
+    product_name_fr = models.CharField("nom produit", max_length=255)
     nutriscore_score = models.IntegerField("score produit")
     nutriscore_grade = models.CharField("grade produit",
                                         max_length=1,
@@ -112,8 +111,8 @@ class Product(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            'products:detail',
-            kwargs={"slug": self.slug}
+            'product_detail',
+            args=[self.slug]
         )
 
 
@@ -130,7 +129,9 @@ class Favorite(models.Model):
 
     class Meta:
         unique_together = (('id_user', 'id_product'),)
+        ordering = ['-date_favorite']
 
     id_user = models.ForeignKey(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
     id_product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    date_favorite = models.DateTimeField('date favori', auto_now_add=True)

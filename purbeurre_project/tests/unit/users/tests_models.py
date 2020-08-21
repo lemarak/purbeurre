@@ -39,15 +39,10 @@ class CustomUserTests(TestCase):
         self.assertTrue(superUser.is_superuser)
 
     # def test_duplicate_users(self):
-    #     with self.assertRaises(TypeError) as foo:
-    #         user1 = self.User.objects.create(
-    #             username='test',
-    #             email='test@example.com',
-    #             password='123test',
-    #         )
+    #     with self.assertRaises(TestCase.IntegrityError) as ex:
     #         user2 = self.User.objects.create(
     #             username='test',
     #             email='test@example.com',
     #             password='123test',
     #         )
-    #     self.assertEqual("???", str(foo.exception), "???")
+    #     self.assertEqual(ex.exception.error_code, 3)

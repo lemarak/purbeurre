@@ -56,7 +56,7 @@
                         <p class="card-text">{{ substitute.generic_name_fr }}</p>
                         <div class="d-flex justify-content-between align-items-center">
                             {% if user.is_authenticated %}
-                            {% if substitute in favorites %}
+                            {% if substitute in user.product_set.all %}
                             <a href="{% url 'admin_favorite' substitute.id_product 'del' %}"
                                 class="btn btn-sm btn-outline-secondary">Retirer</a>
                             {% else %}
