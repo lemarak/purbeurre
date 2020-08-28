@@ -20,12 +20,14 @@
         </div>
 
         <div class="row justify-content-center">
+            {% if user.is_authenticated %}
             {% if product in user.product_set.all %}
             <a href="{% url 'admin_favorite' product.id_product 'del' %}"
                 class="btn btn-sm btn-outline-primary">Retirer</a>
             {% else %}
             <a href="{% url 'admin_favorite' product.id_product 'add' %}"
                 class="btn btn-sm btn-outline-primary">Sauvegarder</a>
+            {% endif %}
             {% endif %}
         </div>
         <div class="row">
