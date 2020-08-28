@@ -4,12 +4,13 @@ python:
   - "3.8"
 
 install:
-  - pipenv install
-  - pip install
+  - pip install -r requirements.txt
+
+services:
+  - postgresql
 
 script:
   - python purbeurre_project/manage.py test
 
 env:
   - DJANGO_VERSION=3.1
-  - SECRET_KEY = '8$ccp4u6y$s8w)ne2t5e@!+5o&nsi(lhelo=0470k9+whz+2_7'
