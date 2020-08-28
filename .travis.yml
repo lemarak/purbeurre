@@ -9,8 +9,16 @@ install:
 services:
   - postgresql
 
-script:
-  - python purbeurre_project/manage.py test
-
 env:
   - DJANGO_VERSION=3.1
+
+before_script:
+  - psql -c "CREATE DATABASE purbeurre;" -U postgres
+  - psql -c "CREATE USER django"
+  - psql -c "ALTER USER django WITH PASSWORD 'django'"
+  - psql -c "GRANT ALL PRIVILEGES ON DATABASE purbeurre TO django"
+  - psql -c "ALTER USER django CREATEDB;"
+
+script:
+  - python manage.py migrate
+  - python purbeurre_project/manage.py test
