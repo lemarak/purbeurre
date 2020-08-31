@@ -1,8 +1,19 @@
-from django.test import TestCase
-from django.contrib.auth import get_user_model
+from django.test import TestCase, Client
+from django.contrib.auth import get_user_model, get_user
 from django.urls import reverse, resolve
 
 from users.views import SignupPageView, UpdateUserPageView
+
+
+class SetUp(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.User = get_user_model()
+        cls.user_test = cls.User.objects.create_user(
+            username='test',
+            email='test@example.com',
+            password='123test'
+        )
 
 
 class SignupPageTests(TestCase):
@@ -14,3 +25,33 @@ class SignupPageTests(TestCase):
             view.func.__name__,
             SignupPageView.as_view().__name__
         )
+
+
+class SigninPageTests(SetUp):
+
+    def test_signin_page_view(self):
+        c = Client()
+        response = c.post('/accounts/login/', {
+            'username': 'test@example.com',
+            'password': '123test'}
+        )
+        user = get_user(response.wsgi_request)
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(user.is_authenticated)
+        self.assertTrue(user.username, "test")
+        self.assertTrue(user.email, "test@example.com")
+
+    def test_login_view(self):
+        c = Client()
+        logged_in = c.login(email='test@example.com', password='123test')
+        self.assertTrue(logged_in)
+
+
+# class ProfilePageTests(SetUp):
+
+#     def test_profile_page(self):
+#         c = Client()
+#         logged_in = c.login(email='test@example.com', password='123test')
+#         url = reverse('profile', args=[1])
+#         response = self.client.get(url)
+#         self.assertEqual(response.status_code, 302)

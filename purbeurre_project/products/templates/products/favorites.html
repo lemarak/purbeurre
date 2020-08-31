@@ -38,10 +38,14 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ favorite }}</h5>
                         <p class="card-text">{{ favorite.generic_name_fr }}</p>
+                        
                         <div class="d-flex justify-content-between align-items-center">
+                            {% if user.is_authenticated %}
                             <a href="{% url 'admin_favorite' favorite.id_product 'del' %}" class="btn btn-sm btn-outline-secondary">Retirer</a>
+                            {% endif %}
                              <small class="text-muted">{{ favorite.categories.first }}</small>
                         </div>
+                        
                     </div>
                 </div>
             </div>

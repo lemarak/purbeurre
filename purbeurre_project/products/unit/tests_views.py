@@ -1,4 +1,4 @@
-from django.test import TestCase
+from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
@@ -18,7 +18,7 @@ class ProductsViewTest(TestCase):
         cls.category.save()
 
         cls.User = get_user_model()
-        cls.user = cls.User.objects.create(
+        cls.user = cls.User.objects.create_user(
             username='test',
             email='test@example.com',
             password='123test'
@@ -36,6 +36,10 @@ class ProductsViewTest(TestCase):
             cls.product.save()
             cls.product.categories.add(cls.category)
             cls.product.favorites.add(cls.user)
+
+        cls.client_login = Client(HTTP_REFERER=reverse('home'))
+        cls.logged_in = cls.client_login.login(
+            username='test@example.com', password='123test')
 
     def test_search_pagination_is_six(self):
         url = "%s?search=test" % reverse('search')
@@ -70,10 +74,48 @@ class ProductsViewTest(TestCase):
         self.assertTrue(len(response.context['substitutes']) == 4)
 
     def test_favorites_pagination_is_six(self):
-        login = self.client.login(email='test@example.com', password='123test')
         url = reverse('favorites')
-        response = self.client.get(url)
+        response = self.client_login.get(url)
+        self.assertTrue(self.logged_in)
+        self.assertEqual(response.context['user'].email, 'test@example.com')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(response.context['is_paginated'] == True)
         self.assertTrue(len(response.context['favorites']) == 6)
+
+    def test_add_favorite(self):
+        product_to_fav = Product(
+            id_product="fav01",
+            product_name_fr="test_favori",
+            nutriscore_score=0,
+            nutriscore_grade='A'
+        )
+        product_to_fav.save()
+        url = reverse('admin_favorite',
+                      args=['fav01', 'add'])
+        response = self.client_login.get(url)
+        user = self.User.objects.get(pk=1)
+        favorites = Product.objects.filter(favorites=user)
+
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(favorites), 12)
+        self.assertTrue(product_to_fav in user.product_set.all())
+
+    def test_del_favorite(self):
+        url = reverse('admin_favorite',
+                      args=['key0', 'del'])
+        response = self.client_login.get(url)
+        user = self.User.objects.get(pk=1)
+        favorites = Product.objects.filter(favorites=user)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(favorites), 10)
+        self.assertTrue(Product.objects.get(pk='key0')
+                        not in user.product_set.all())
+
+    def test_page_detail(self):
+        url = reverse('product_detail', args=['key1'])
+        response = self.client_login.get(url)
+        html = response.content.decode('utf8')
+        self.assertEqual(response.status_code, 200)
+        self.assertInHTML("""
+          <h3 class="text-white">test_1 (category_test)</h3>
+        """, html)
