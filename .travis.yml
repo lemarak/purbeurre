@@ -20,5 +20,5 @@ before_script:
   - psql -c "ALTER USER django CREATEDB;"
 
 script:
-  - python manage.py migrate
-  - python purbeurre_project/manage.py test
+  - python purbeurre_project\manage.py migrate
+  - python purbeurre_project\manage.py test
