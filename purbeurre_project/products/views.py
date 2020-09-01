@@ -58,8 +58,9 @@ class FavoritesListView(ListView):
     paginate_by = 6
 
     def get_queryset(self):
-        favorites = Product.objects.filter(favorites=self.request.user)
-        # favorites = favorites.order_by('-favorites.date_favorite')
+        favorites = Product.objects.filter(
+            favorites=self.request.user
+            ).order_by('-products_favorite.date_favorite')
         return favorites
 
 

@@ -2,3 +2,4 @@
 coverage_html/
 .coverage
 .coveragerc
+geckodriver.log

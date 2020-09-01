@@ -46,7 +46,7 @@ class ProductsViewTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(response.context['is_paginated'])
         self.assertTrue(len(response.context['products']) == 6)
 
     def test_lists_all_products_from_search(self):
@@ -54,7 +54,7 @@ class ProductsViewTest(TestCase):
         response = self.client.get(url+'&page=2')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(response.context['is_paginated'])
         self.assertTrue(len(response.context['products']) == 5)
 
     def test_substitutes_pagination_is_six(self):
@@ -62,7 +62,7 @@ class ProductsViewTest(TestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(response.context['is_paginated'])
         self.assertTrue(len(response.context['substitutes']) == 6)
 
     def test_lists_all_products_from_substitutes(self):
@@ -70,7 +70,7 @@ class ProductsViewTest(TestCase):
         response = self.client.get(url+'?page=2')
         self.assertEqual(response.status_code, 200)
         self.assertTrue('is_paginated' in response.context)
-        self.assertTrue(response.context['is_paginated'] == True)
+        self.assertTrue(response.context['is_paginated'])
         self.assertTrue(len(response.context['substitutes']) == 4)
 
     def test_favorites_pagination_is_six(self):
@@ -93,7 +93,7 @@ class ProductsViewTest(TestCase):
         url = reverse('admin_favorite',
                       args=['fav01', 'add'])
         response = self.client_login.get(url)
-        user = self.User.objects.get(pk=1)
+        user = self.User.objects.get(username='test')
         favorites = Product.objects.filter(favorites=user)
 
         self.assertEqual(response.status_code, 302)
@@ -104,12 +104,12 @@ class ProductsViewTest(TestCase):
         url = reverse('admin_favorite',
                       args=['key0', 'del'])
         response = self.client_login.get(url)
-        user = self.User.objects.get(pk=1)
-        favorites = Product.objects.filter(favorites=user)
+        # user = self.User.objects.get(pk=1)
+        favorites = Product.objects.filter(favorites=self.user)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(favorites), 10)
         self.assertTrue(Product.objects.get(pk='key0')
-                        not in user.product_set.all())
+                        not in self.user.product_set.all())
 
     def test_page_detail(self):
         url = reverse('product_detail', args=['key1'])
