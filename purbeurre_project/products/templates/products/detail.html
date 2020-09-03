@@ -23,10 +23,10 @@
             {% if user.is_authenticated %}
             {% if product in user.product_set.all %}
             <a href="{% url 'admin_favorite' product.id_product 'del' %}"
-                class="btn btn-sm btn-outline-primary">Retirer</a>
+                class="btn btn-sm btn-outline-primary" id="del-fav">Retirer</a>
             {% else %}
             <a href="{% url 'admin_favorite' product.id_product 'add' %}"
-                class="btn btn-sm btn-outline-primary">Sauvegarder</a>
+                class="btn btn-sm btn-outline-primary" id="add-fav">Sauvegarder</a>
             {% endif %}
             {% endif %}
         </div>

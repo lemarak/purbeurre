@@ -1,6 +1,8 @@
 from selenium.webdriver import FireFox
 from selenium.webdriver.common.keys import Keys
 
+
+# pour tests persos
 driver = Firefox()
 driver.get("http://www.python.org")
 assert "Python" in driver.title

@@ -32,7 +32,8 @@
                         <h5 class="card-title">{{ product }}</h5>
                         <p class="card-text">{{ product.generic_name_fr }}</p>
                         <div class="d-flex justify-content-between align-items-center">
-                            <a href="{% url 'substitutes' product.slug %}" class="btn btn-sm btn-outline-secondary">Voir
+                            <a href="{% url 'substitutes' product.slug %}" class="btn btn-sm btn-outline-secondary"
+                                id="link-{{ product.slug }}">Voir
                                 substituts</a>
                             <small class="text-muted">{{ product.categories.first }}</small>
                         </div>
