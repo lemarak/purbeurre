@@ -141,7 +141,7 @@ class ProductsChrome(LiveServerTestCase):
             "%s%s" %
             (str(self.live_server_url),
              '/products/key1'))
-        time.sleep(20)
+        time.sleep(1)
         fav_button = self.browser.find_element_by_id('add-fav')
         fav_button.click()
         time.sleep(1)
