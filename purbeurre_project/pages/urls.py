@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import HomePageView, AboutPageView, LegalNotices
+from .views import HomePageView, LegalNotices
 
 
 urlpatterns = [

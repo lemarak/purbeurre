@@ -70,7 +70,7 @@ class SignInFormTest(LiveServerTestCase):
         password_input.send_keys('123test')
         if (action == "button"):
             submission_button = self.browser.find_element_by_class_name(
-            'btn-success')
+                'btn-success')
             submission_button.click()
         else:
             password_input.send_keys(Keys.ENTER)

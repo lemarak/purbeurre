@@ -1,8 +1,8 @@
 from django.test import TestCase, Client
 from django.contrib.auth import get_user_model, get_user
-from django.urls import reverse, resolve
+from django.urls import resolve
 
-from users.views import SignupPageView, UpdateUserPageView
+from users.views import SignupPageView
 
 
 class SetUp(TestCase):
@@ -19,7 +19,7 @@ class SetUp(TestCase):
 class SignupPageTests(TestCase):
 
     def test_signup_view(self):
-        """ test route """
+        """test route."""
         view = resolve('/accounts/signup/')
         self.assertEqual(
             view.func.__name__,

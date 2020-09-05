@@ -3,13 +3,13 @@ from django.contrib.auth import get_user_model
 
 
 class CustomUserTests(TestCase):
-    """ tests users application """
+    """tests users application."""
 
     def setUp(self):
         self.User = get_user_model()
 
     def test_create_user(self):
-        """ Tests the creation of a user """
+        """Tests the creation of a user."""
 
         user = self.User.objects.create(
             username='test',
@@ -26,7 +26,7 @@ class CustomUserTests(TestCase):
         self.assertFalse(user.is_superuser)
 
     def test_create_superuser(self):
-        """ Tests the creation of a super user """
+        """Tests the creation of a super user."""
 
         superUser = self.User.objects.create_superuser(
             username='admin',

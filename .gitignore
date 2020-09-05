@@ -1,5 +1,5 @@
 .env
-coverage_html/
+htmlcov/
 .coverage
 .coveragerc
 geckodriver.log

@@ -1,11 +1,7 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import DetailView, ListView
-from django.views import View
-from django.core.paginator import Paginator
-# from django.contrib.auth import get_user_model
 
-from .models import Product, Favorite
-# from users.models import CustomUser
+from .models import Product
 
 
 class ProductDetailView(DetailView):
@@ -60,7 +56,7 @@ class FavoritesListView(ListView):
     def get_queryset(self):
         favorites = Product.objects.filter(
             favorites=self.request.user
-            ).order_by('-products_favorite.date_favorite')
+        ).order_by('-products_favorite.date_favorite')
         return favorites
 
 

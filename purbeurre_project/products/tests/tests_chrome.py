@@ -1,6 +1,6 @@
 import time
 
-from django.test import LiveServerTestCase, Client
+from django.test import LiveServerTestCase
 from django.contrib.auth import get_user_model
 
 from selenium.webdriver import Chrome, ChromeOptions
@@ -134,8 +134,6 @@ class ProductsChrome(LiveServerTestCase):
                           html)
 
     def test_add_fav(self):
-        # client = Client()
-        # logged_in = client.login(email='test@example.com', password='123test')
         self.login_user('test@example.com', '123test')
         self.browser.get(
             "%s%s" %
