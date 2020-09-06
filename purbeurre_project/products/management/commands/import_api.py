@@ -8,12 +8,15 @@ from django.conf import settings
 
 
 class Command(BaseCommand):
+    """command to import data from OpenFoodFacts products and categories are
+    deleted before import."""
     help = """
             importation des données de l'api Openfoodcats
             et enregistrement dans la base de données.
         """
 
     def handle(self, *args, **kwargs):
+        """main method."""
         self.stdout.write(self.style.WARNING(
             'Début de l\'importation API OpenFoodFacts'))
 
@@ -41,6 +44,7 @@ class Command(BaseCommand):
                     self.add_product(product, category['id'])
 
     def request_api_categories(self):
+        """return json data from category api."""
         url = "https://fr.openfoodfacts.org/categories&json=1"
         res = requests.get(url)
         self.stdout.write(self.style.WARNING(
@@ -48,6 +52,7 @@ class Command(BaseCommand):
         return res.json()
 
     def request_api_products(self, category):
+        """return json data products from one category."""
         url = "https://fr.openfoodfacts.org/cgi/search.pl? \
                     action=process& \
                     tagtype_0=categories& \
@@ -64,6 +69,7 @@ class Command(BaseCommand):
         return res.json()
 
     def add_category(self, category):
+        """add one category in database."""
         new_category = Category.objects.create(
             id_category=category['id'],
             name=category['name'],
@@ -74,6 +80,7 @@ class Command(BaseCommand):
         new_category.save()
 
     def add_product(self, product, id_category):
+        """add one product in database."""
         # Mandatory fields in the API
         mandatory_fields = [
             '_id',
@@ -116,6 +123,7 @@ class Command(BaseCommand):
                 new_product.save()
 
     def check_all_fields_product(self, product, mandatory_fields):
+        """checks if the mandatory fields are present in the dict product."""
         for field in mandatory_fields:
             if field not in product:
                 return False

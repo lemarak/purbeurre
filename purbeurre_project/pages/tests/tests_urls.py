@@ -1,8 +1,10 @@
+"""test urls's pages."""
 from django.test import SimpleTestCase
 from django.urls import reverse
 
 
 class PagesUrlTests(SimpleTestCase):
+    """each method test url given by urls.py."""
 
     def test_home_url(self):
         """test the home url."""

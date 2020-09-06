@@ -1,3 +1,6 @@
+"""Description of the database tables associated with products, each model maps
+to a single database table."""
+
 from django.db import models
 from django.urls import reverse
 from django.conf import settings
@@ -10,6 +13,7 @@ from users.models import CustomUser
 
 
 class Category(models.Model):
+    """Stores a category."""
     id_category = models.CharField(
         "id_category", max_length=150, primary_key=True)
     slug = AutoSlugField("id Category Adress",
@@ -22,12 +26,16 @@ class Category(models.Model):
     visible = models.BooleanField("visible")
 
     def __str__(self):
-        return self.name
+        """Custom representation of a category instance."""
+        return str(self.name)
 
 
 class ProductManager(models.Manager):
+    """Methods associated with the Product model (find products and get
+    substitutes)"""
 
     def search(self, name):
+        """searches for products corresponding to parameter xxx."""
         queryset = self.get_queryset()
         try:
             products = queryset.filter(
@@ -45,6 +53,7 @@ class ProductManager(models.Manager):
             return products
 
     def get_substitutes(self, product):
+        """obtain the substitutes of the product passed in parameter."""
         queryset = self.get_queryset()
         try:
             substitutes = queryset.filter(
@@ -63,7 +72,7 @@ class ProductManager(models.Manager):
 
 
 class Product(models.Model):
-
+    """Stores a product."""
     NUTRISCORE_GRADE = [
         ('A', 'Score A'),
         ('B', 'Score B'),
@@ -107,9 +116,11 @@ class Product(models.Model):
     objects = ProductManager()
 
     def __str__(self):
-        return self.product_name_fr
+        """Custom representation of a product instance."""
+        return str(self.product_name_fr)
 
     def get_absolute_url(self):
+        """get url page from a product."""
         return reverse(
             'product_detail',
             args=[self.slug]
@@ -117,8 +128,12 @@ class Product(models.Model):
 
 
 class CatProd(models.Model):
-
+    """
+    Stores a category for a product, related to :model:`products.Product` and
+    :model:`products.Category`.
+    """
     class Meta:
+        """for primary key."""
         unique_together = (('id_category', 'id_product'),)
 
     id_category = models.ForeignKey('Category', on_delete=models.CASCADE)
@@ -126,8 +141,12 @@ class CatProd(models.Model):
 
 
 class Favorite(models.Model):
-
+    """
+    Stores a favourite for a product, related to :model:`products.Product` and
+    :model:`auth.User`.
+    """
     class Meta:
+        """for primary key and ordering."""
         unique_together = (('id_user', 'id_product'),)
         ordering = ['-date_favorite']
 

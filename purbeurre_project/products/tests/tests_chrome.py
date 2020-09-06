@@ -10,8 +10,9 @@ from products.models import Product, Category
 
 
 class ProductsChrome(LiveServerTestCase):
-
+    """functional tests using selenium and TestCase."""
     def setUp(self):
+        """Method called to prepare the test fixture."""
         self.browser = Chrome()
         self.options = ChromeOptions()
         self.options.add_experimental_option("excludeSwitches",
@@ -43,9 +44,12 @@ class ProductsChrome(LiveServerTestCase):
             self.product.categories.add(self.category)
 
     def tearDown(self):
+        """Method called immediately after the test method has been called and
+        the result recorded."""
         self.browser.quit()
 
     def login_user(self, email, pwd):
+        """method simulating the connection of a user."""
         self.browser.get("%s%s" %
                          (str(self.live_server_url), '/accounts/login/'))
         username_input = self.browser.find_element_by_id('id_username')
@@ -58,6 +62,8 @@ class ProductsChrome(LiveServerTestCase):
         submission_button.click()
 
     def search_product(self, action_id):
+        """ method simulating the search for a product
+        param: action_id (search-form or search-nav) """
         self.browser.get(str(self.live_server_url))
         # search
         search_input = self.browser.find_element_by_id(action_id)
@@ -71,6 +77,7 @@ class ProductsChrome(LiveServerTestCase):
         time.sleep(2)
 
     def test_search_product_with_form(self):
+        """test search from form."""
         self.search_product('search-form')
         html = self.browser.page_source
         self.assertInHTML("""
@@ -79,6 +86,7 @@ class ProductsChrome(LiveServerTestCase):
                           html)
 
     def test_search_product_with_nav(self):
+        """test the search from the nav bar."""
         self.search_product('search-nav')
         html = self.browser.page_source
         self.assertInHTML("""
@@ -87,6 +95,7 @@ class ProductsChrome(LiveServerTestCase):
                           html)
 
     def test_search_product_and_page_next(self):
+        """test next page with search."""
         self.browser.get(
             "%s%s" %
             (str(self.live_server_url),
@@ -113,6 +122,7 @@ class ProductsChrome(LiveServerTestCase):
                           html)
 
     def test_get_substitutes(self):
+        """test substitutes page."""
         self.browser.get(
             "%s%s" %
             (str(self.live_server_url),
@@ -134,6 +144,7 @@ class ProductsChrome(LiveServerTestCase):
                           html)
 
     def test_add_fav(self):
+        """test adding favorites."""
         self.login_user('test@example.com', '123test')
         self.browser.get(
             "%s%s" %
@@ -148,6 +159,3 @@ class ProductsChrome(LiveServerTestCase):
             Retirer
                 """,
                           html)
-
-        # def test_del_fav(self):
-        #     pass
