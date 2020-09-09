@@ -1,4 +1,4 @@
-"""design URLs for an app."""
+"""design routes for products app."""
 from django.urls import path
 
 from .views import (

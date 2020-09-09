@@ -1,3 +1,5 @@
+"""Managing admin pages for the users application."""
+
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
@@ -9,6 +11,7 @@ CustomUser = get_user_model()
 
 
 class CustomUserAdmin(UserAdmin):
+    """Managing admin pages for the users application."""
 
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm

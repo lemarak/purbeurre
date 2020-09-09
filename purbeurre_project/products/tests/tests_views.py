@@ -1,3 +1,4 @@
+"""Test the View module for products."""
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.contrib.auth import get_user_model
@@ -6,9 +7,10 @@ from products.models import Product, Category
 
 
 class ProductsViewTest(TestCase):
-
+    """Test the views of a product."""
     @classmethod
     def setUpTestData(cls):
+        """Method called to prepare the test fixture."""
         cls.category = Category(
             id_category="1à",
             name="category_test",
@@ -42,6 +44,7 @@ class ProductsViewTest(TestCase):
             username='test@example.com', password='123test')
 
     def test_search_pagination_is_six(self):
+        """check pagination by six for search."""
         url = "%s?search=test" % reverse('search')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -50,6 +53,7 @@ class ProductsViewTest(TestCase):
         self.assertTrue(len(response.context['products']) == 6)
 
     def test_lists_all_products_from_search(self):
+        """test if all products returned by search, second page called."""
         url = "%s?search=test" % reverse('search')
         response = self.client.get(url+'&page=2')
         self.assertEqual(response.status_code, 200)
@@ -58,6 +62,7 @@ class ProductsViewTest(TestCase):
         self.assertTrue(len(response.context['products']) == 5)
 
     def test_substitutes_pagination_is_six(self):
+        """check pagination by six for substitutes."""
         url = reverse('substitutes', args=['key1'])
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
@@ -66,6 +71,8 @@ class ProductsViewTest(TestCase):
         self.assertTrue(len(response.context['substitutes']) == 6)
 
     def test_lists_all_products_from_substitutes(self):
+        """test if all substitutes returned for a product, second page
+        called."""
         url = reverse('substitutes', args=['key1'])
         response = self.client.get(url+'?page=2')
         self.assertEqual(response.status_code, 200)
@@ -74,6 +81,7 @@ class ProductsViewTest(TestCase):
         self.assertTrue(len(response.context['substitutes']) == 4)
 
     def test_favorites_pagination_is_six(self):
+        """test favourite page."""
         url = reverse('favorites')
         response = self.client_login.get(url)
         self.assertTrue(self.logged_in)
@@ -83,6 +91,7 @@ class ProductsViewTest(TestCase):
         self.assertTrue(len(response.context['favorites']) == 6)
 
     def test_add_favorite(self):
+        """Test adding a favorite."""
         product_to_fav = Product(
             id_product="fav01",
             product_name_fr="test_favori",
@@ -101,10 +110,10 @@ class ProductsViewTest(TestCase):
         self.assertTrue(product_to_fav in user.product_set.all())
 
     def test_del_favorite(self):
+        """Test deleting a favorite."""
         url = reverse('admin_favorite',
                       args=['key0', 'del'])
         response = self.client_login.get(url)
-        # user = self.User.objects.get(pk=1)
         favorites = Product.objects.filter(favorites=self.user)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(favorites), 10)
@@ -112,6 +121,7 @@ class ProductsViewTest(TestCase):
                         not in self.user.product_set.all())
 
     def test_page_detail(self):
+        """Test the detail page of a product."""
         url = reverse('product_detail', args=['key1'])
         response = self.client_login.get(url)
         html = response.content.decode('utf8')

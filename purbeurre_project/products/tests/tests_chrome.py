@@ -1,3 +1,4 @@
+"""functional tests using selenium and TestCase."""
 import time
 
 from django.test import LiveServerTestCase
@@ -70,7 +71,7 @@ class ProductsChrome(LiveServerTestCase):
         submission_button = self.browser.find_element_by_class_name(
             'btn-primary')
         search_input.send_keys('test_')
-        if (action_id == 'search-form'):
+        if action_id == 'search-form':
             submission_button.click()
         else:
             search_input.send_keys(Keys.ENTER)

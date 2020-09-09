@@ -1,3 +1,5 @@
+"""design routes for users app."""
+
 from django.urls import path
 from .views import SignupPageView, UpdateUserPageView
 

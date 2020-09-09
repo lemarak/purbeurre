@@ -1,3 +1,6 @@
+"""Description of the database tables associated with users, each model maps to
+a single database table."""
+
 from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.utils.translation import ugettext_lazy as _
@@ -38,7 +41,7 @@ class UserManager(BaseUserManager):
 
 
 class CustomUser(AbstractUser):
-
+    """Define a Custom user with additional fields."""
     email = models.EmailField(_('adresse mail'), unique=True)
     name = models.CharField(
         _("Name of User"), blank=True, max_length=255

@@ -1,3 +1,4 @@
+"""functional tests using selenium and TestCase."""
 import time
 
 from django.test import LiveServerTestCase
@@ -8,14 +9,21 @@ from django.contrib.auth import get_user_model
 
 
 class SignUpTest(LiveServerTestCase):
-
+    """Functionnal tests for signup page."""
     def setUp(self):
+        """Method called to prepare the test fixture."""
         self.browser = Chrome()
 
     def tearDown(self):
+        """Method called immediately after the test method has been called and
+        the result recorded."""
         self.browser.quit()
 
     def signup_form(self, action):
+        """method simulating the signup of a user.
+
+        param: action_id (button or key)
+        """
         self.browser.get("%s%s" %
                          (str(self.live_server_url), '/accounts/signup/'))
         email_input = self.browser.find_element_by_id('id_email')
@@ -40,15 +48,18 @@ class SignUpTest(LiveServerTestCase):
                          current_url)
 
     def test_signup_with_button(self):
+        """test signup with click on button."""
         self.signup_form('button')
 
     def test_signup_with_key(self):
+        """test signup with enter."""
         self.signup_form('key')
 
 
 class SignInFormTest(LiveServerTestCase):
-
+    """Functionnal tests for signin page."""
     def setUp(self):
+        """Method called to prepare the test fixture."""
         self.browser = Chrome()
         User = get_user_model()
         User.objects.create_user(
@@ -58,9 +69,15 @@ class SignInFormTest(LiveServerTestCase):
         )
 
     def tearDown(self):
+        """Method called immediately after the test method has been called and
+        the result recorded."""
         self.browser.quit()
 
     def signin_form(self, action):
+        """method simulating the signin of a user.
+
+        param: action_id (button or key)
+        """
         self.browser.get("%s%s" %
                          (str(self.live_server_url), '/accounts/login/'))
         username_input = self.browser.find_element_by_id('id_username')
@@ -87,12 +104,15 @@ class SignInFormTest(LiveServerTestCase):
                           html)
 
     def test_signin_with_button(self):
+        """test signup with click on button."""
         self.signin_form('button')
 
     def test_signin_with_key(self):
+        """test signup with key enter."""
         self.signin_form('key')
 
     def test_bad_signin(self):
+        """test signin with bad mail."""
         url_login = "%s%s" % (str(self.live_server_url), '/accounts/login/')
         self.browser.get(url_login)
         username_input = self.browser.find_element_by_id('id_username')
