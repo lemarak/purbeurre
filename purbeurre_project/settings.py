@@ -28,7 +28,7 @@ if os.environ.get("ENV", "development") == "production":
     SECRET_KEY = os.environ.get("SECRET_KEY")
     USER = os.environ.get("USER")
     PWD_DB = os.environ.get("PWD_DB")
-    DEBUG = False
+    DEBUG = True
 else:
     SECRET_KEY = os.getenv('SECRET_KEY')
     PWD_DB = os.getenv('PWD_DB')
