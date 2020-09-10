@@ -24,12 +24,16 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+if os.environ.get("ENV", "development") == "production":
+    SECRET_KEY = os.environ.get("SECRET_KEY")
+    PWD_DB = os.environ.get("PWD_DB")
+    DEBUG = False
+else:
+    SECRET_KEY = os.getenv('SECRET_KEY')
+    PWD_DB = os.getenv('PWD_DB')
+    DEBUG = True
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False if os.environ.get("ENV", "development") == "production" else True
-
-ALLOWED_HOSTS = ['.herokuapps.com','localhost','127.0.0.1']
+ALLOWED_HOSTS = ['.herokuapps.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -152,11 +156,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_FINDERS = [
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-]
+# STATICFILES_FINDERS = [
+#     "django.contrib.staticfiles.finders.FileSystemFinder",
+#     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+# ]
 
 django_heroku.settings(locals())
