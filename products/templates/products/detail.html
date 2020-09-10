@@ -32,7 +32,7 @@
         </div>
         <div class="row">
             <div class="col-7">
-                {% with "images/nutriscore-"|add:product.nutriscore_grade|add:".svg" as url_score %}
+                {% with "images/nutriscore-"|add:product.nutriscore_grade|lower|add:".svg" as url_score %}
                 <a href="https://fr.openfoodfacts.org/nutriscore" target="_blank">
                     <img class="img-fluid rounded mx-auto d-block product-img" src="{% static url_score %}"
                         alt="{{ product.nutriscore_grade }}">
