@@ -17,6 +17,8 @@ pylint = "*"
 selenium = "*"
 flake8 = "*"
 docformatter = "*"
+django-heroku = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
