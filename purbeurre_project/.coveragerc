@@ -1,6 +1,0 @@
-[run]
-include = purbeurre_project/*
-omit = *migrations*, *tests*, *templates*, *coverage_html*
-disable_warnings = already-imported
-plugins =
-    django_coverage_plugin
