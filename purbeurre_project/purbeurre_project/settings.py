@@ -26,14 +26,16 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
 # SECURITY WARNING: keep the secret key used in production secret!
 if os.environ.get("ENV", "development") == "production":
     SECRET_KEY = os.environ.get("SECRET_KEY")
+    USER = os.environ.get("USER")
     PWD_DB = os.environ.get("PWD_DB")
     DEBUG = False
 else:
     SECRET_KEY = os.getenv('SECRET_KEY')
     PWD_DB = os.getenv('PWD_DB')
+    USER = 'postgres'
     DEBUG = True
 
-ALLOWED_HOSTS = ['.herokuapps.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['oc-purbeurre-dauguet.herokuapp.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -111,8 +113,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'purbeurre',
-        'USER': 'postgres',
-        'PASSWORD': os.getenv('PWD_DB'),
+        'USER': USER,
+        'PASSWORD': PWD_DB,
         'HOST': 'localhost',
         'PORT': 5432
     }
@@ -156,7 +158,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'), ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 # STATICFILES_FINDERS = [
 #     "django.contrib.staticfiles.finders.FileSystemFinder",
