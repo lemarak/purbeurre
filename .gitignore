@@ -1,6 +1,5 @@
 .env
 htmlcov/
 .coverage
-.coveragerc
 geckodriver.log
 staticfiles/
