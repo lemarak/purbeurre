@@ -101,7 +101,19 @@ CATEGORIES_VISIBLE = [
     "en:fruit-based-beverages",
     "en:frozen-desserts",
     "en:pasteurized-cheeses",
-    "en:colas"
+    "en:colas",
+    "en:snacks",
+    "en:dairies",
+    "en:fruits-and-vegetables-based-foods",
+    "en:meals",
+    "en:fermented-foods",
+    "en:biscuits-and-cakes",
+    "en:groceries",
+    "en:breakfasts",
+    "en:cheeses",
+    "en:sweet-spreads",
+    "en:chocolates",
+    "en:yogurts",
 ]
 WSGI_APPLICATION = 'purbeurre_project.wsgi.application'
 

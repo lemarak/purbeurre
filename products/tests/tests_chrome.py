@@ -12,6 +12,7 @@ from products.models import Product, Category
 
 class ProductsChrome(LiveServerTestCase):
     """functional tests using selenium and TestCase."""
+
     def setUp(self):
         """Method called to prepare the test fixture."""
         self.browser = Chrome()
@@ -51,6 +52,7 @@ class ProductsChrome(LiveServerTestCase):
 
     def login_user(self, email, pwd):
         """method simulating the connection of a user."""
+        time.sleep(2)
         self.browser.get("%s%s" %
                          (str(self.live_server_url), '/accounts/login/'))
         username_input = self.browser.find_element_by_id('id_username')
@@ -65,13 +67,14 @@ class ProductsChrome(LiveServerTestCase):
     def search_product(self, action_id):
         """ method simulating the search for a product
         param: action_id (search-form or search-nav) """
+        time.sleep(2)
         self.browser.get(str(self.live_server_url))
         # search
         search_input = self.browser.find_element_by_id(action_id)
-        submission_button = self.browser.find_element_by_class_name(
-            'btn-primary')
         search_input.send_keys('test_')
         if action_id == 'search-form':
+            submission_button = self.browser.find_element_by_class_name(
+                'btn-primary')
             submission_button.click()
         else:
             search_input.send_keys(Keys.ENTER)
@@ -97,6 +100,7 @@ class ProductsChrome(LiveServerTestCase):
 
     def test_search_product_and_page_next(self):
         """test next page with search."""
+        time.sleep(2)
         self.browser.get(
             "%s%s" %
             (str(self.live_server_url),
@@ -124,6 +128,7 @@ class ProductsChrome(LiveServerTestCase):
 
     def test_get_substitutes(self):
         """test substitutes page."""
+        time.sleep(2)
         self.browser.get(
             "%s%s" %
             (str(self.live_server_url),
@@ -147,6 +152,7 @@ class ProductsChrome(LiveServerTestCase):
     def test_add_fav(self):
         """test adding favorites."""
         self.login_user('test@example.com', '123test')
+        time.sleep(2)
         self.browser.get(
             "%s%s" %
             (str(self.live_server_url),
